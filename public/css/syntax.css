@@ -1,8 +1,8 @@
 .highlight .hll { background-color: #ffc; }
-.highlight .c { color: #999; } /* Comment */
+.highlight .c  { color: #999; } /* Comment */
 .highlight .err { color: #a00; background-color: #faa } /* Error */
-.highlight .k { color: rgb(0, 147, 221); } /* Keyword */
-.highlight .o { color: #555 } /* Operator */
+.highlight .k  { color: rgb(0, 147, 221); } /* Keyword */
+.highlight .o  { color: #555 } /* Operator */
 .highlight .cm { color: #09f; font-style: italic } /* Comment.Multiline */
 .highlight .cp { color: #099 } /* Comment.Preproc */
 .highlight .c1 { color: #999; } /* Comment.Single */
@@ -14,7 +14,7 @@
 .highlight .gi { background-color: #cfc; border: 1px solid #0c0 } /* Generic.Inserted */
 .highlight .go { color: #aaa } /* Generic.Output */
 .highlight .gp { color: rgb(1, 119, 216); } /* Generic.Prompt */
-.highlight .gs { } /* Generic.Strong */
+.highlight .gs { color: rgb(1, 119, 216); } /* Generic.Strong */
 .highlight .gu { color: rgb(0, 168, 0); } /* Generic.Subheading */
 .highlight .gt { color: #9c6 } /* Generic.Traceback */
 .highlight .kc { color: rgb(2, 221, 221); } /* Keyword.Constant */
@@ -23,8 +23,8 @@
 .highlight .kp { color: rgb(2, 221, 221); }  /* Keyword.Pseudo */
 .highlight .kr { color: rgb(2, 221, 221); } /* Keyword.Reserved */
 .highlight .kt { color: #078; } /* Keyword.Type */
-.highlight .m { color: #f60 } /* Literal.Number */
-.highlight .s { color: #d44950 } /* Literal.String */
+.highlight .m  { color: #f60 } /* Literal.Number */
+.highlight .s  { color: #d44950 } /* Literal.String */
 .highlight .na { color: #4f9fcf } /* Name.Attribute */
 .highlight .nb { color: rgb(51, 155, 155) } /* Name.Builtin */
 .highlight .nc { color: #0a8; } /* Name.Class */
@@ -38,7 +38,7 @@
 .highlight .nt { color: #2f6f9f; } /* Name.Tag */
 .highlight .nv { color: rgb(12, 163, 163) } /* Name.Variable */
 .highlight .ow { color: rgb(250, 60, 60); } /* Operator.Word */
-.highlight .w { color: #bbb } /* Text.Whitespace */
+.highlight .w  { color: #bbb } /* Text.Whitespace */
 .highlight .mf { color: #f60 } /* Literal.Number.Float */
 .highlight .mh { color: #f60 } /* Literal.Number.Hex */
 .highlight .mi { color: #f60 } /* Literal.Number.Integer */
