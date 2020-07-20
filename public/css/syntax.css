@@ -1,7 +1,7 @@
 .highlight .hll { background-color: #ffc; }
 .highlight .c { color: #999; } /* Comment */
 .highlight .err { color: #a00; background-color: #faa } /* Error */
-.highlight .k { color: #069; } /* Keyword */
+.highlight .k { color: rgb(0, 147, 221); } /* Keyword */
 .highlight .o { color: #555 } /* Operator */
 .highlight .cm { color: #09f; font-style: italic } /* Comment.Multiline */
 .highlight .cp { color: #099 } /* Comment.Preproc */
@@ -59,6 +59,8 @@
 .highlight .vg { color: #033 } /* Name.Variable.Global */
 .highlight .vi { color: #033 } /* Name.Variable.Instance */
 .highlight .il { color: #f60 } /* Literal.Number.Integer.Long */
+
+.highlight .n { color: #fff }
 
 .css .o,
 .css .o + .nt,
