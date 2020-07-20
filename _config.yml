@@ -1,7 +1,7 @@
 permalink: pretty
-title: sshell > blog
-tagline: 'security things and security stuff'
-url: https://sshell.co
+title: xEHLE's blog
+tagline: 'CTF and bug bounty writeups'
+url: https://blog.p1.gs
 paginate: 1
 baseurl: "/"
 
@@ -29,13 +29,12 @@ sass:
 # Options
 
 # Replace this value and uncomment to enable Google Analytics tracking
-ga_analytics: UA-172524932-1
+#ga_analytics: 
 
 # Specify the author for blog posts
 author:
-  name: sshell
-  url: https://twitter.com/sshell_
-  #email: sshell_
+  name: xEHLE
+  url: https://twitter.com/xEHLE_
   
 paginate: 5
 
