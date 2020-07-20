@@ -5,7 +5,7 @@ categories: ctf
 ---
 
 {:refdef: style="text-align: center;"}
-{{ '/public/h1flag.png' | relative_url }}{: .imgCenter}
+![flag]({{ '/public/h1flag.png' | relative_url }}){: .imgCenter}
 {: refdef}
 
 Through multiple vulnerabilites in the web apps and the mobile app i was able to recover Marten's account and pay all the hackers!
@@ -149,11 +149,11 @@ After checking out that location on the filesystem and navigating to /shared_pre
 "user_created.xml"
 Looking at the contents
 {:refdef: style="text-align: center;"}
-{{ '/public/leak.png' | relative_url }}{: .imgCenter}
+![leaked credentials]({{ '/public/leak.png' | relative_url }}){: .imgCenter}
 {: refdef}
 Could this be the hash it is looking for?
 {:refdef: style="text-align: center;"}
-{{ '/public/android.png' | relative_url }}{: .imgCenter}
+![solved android challenge]({{ '/public/android.png' | relative_url }}){: .imgCenter}
 {: refdef}
 Yes!
 
@@ -260,7 +260,7 @@ and send it off.
 A short wait later i refreshed the page and was greeted with a new tab in my menu called admin.
 
 {:refdef: style="text-align: center;"}
-{{ '/public/marten1.png' | relative_url }}{: .imgCenter}
+![marten mickos credentials]({{ '/public/marten1.png' | relative_url }}){: .imgCenter}
 {: refdef}
 
 Another set of credentials, the only other active once besides Brian's which we already knew.
