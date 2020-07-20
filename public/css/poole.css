@@ -119,7 +119,7 @@ p {
 }
 
 strong {
-  color: #303030;
+  color: #fff;
 }
 
 
@@ -165,7 +165,7 @@ code {
   padding: .25em .5em;
   font-size: 85%;
   color: #bf616a;
-  background-color: #f9f9f9;
+  background-color: #495057;
   border-radius: 3px;
 }
 pre {
@@ -179,7 +179,7 @@ pre {
   white-space: pre-wrap;
   word-break: break-all;
   word-wrap: break-word;
-  background-color: #f9f9f9;
+  background-color: #495057;
 }
 pre code {
   padding: 0;
@@ -346,7 +346,7 @@ tbody tr:nth-child(odd) th {
 .page-title,
 .post-title,
 .post-title a {
-  color: #303030;
+  color: #fff;
 }
 .page-title,
 .post-title {
