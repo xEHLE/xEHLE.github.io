@@ -165,9 +165,9 @@ In burp i tried setting it as a cookie first with no success, as a header like t
 I decided to try the same format as inside the app "X-Token: 8e9998ee3137ca9ade8f372739f062c1"
 And it worked.
 It replied with 
-{% highlight javascript %}
+```javascript
 [{"name":"Sam Jenkins","staff_id":"STF:84DJKEIP38"},{"name":"Brian Oliver","staff_id":"STF:KE624RQ2T9"}]
-{% endhighlight %}
+```
 Staff accounts, interesting. But i didnt really have a use for this... yet.
 After jumping into many rabbit holes yet again i decided to try simply changing the request to /api/staff to a POST request.
 400 Bad Request:
@@ -176,9 +176,9 @@ After jumping into many rabbit holes yet again i decided to try simply changing 
 Could this mean that a POST request created staff accounts?
 i decided to add "staff_id=STF:84DJKEIP38" as a POST parameter to see what would happen.
 
-{% highlight javascript %}
+```javascript
 ["Staff Member already has an account"]
-{% endhighlight %}
+```
 Trying the other ID as well with the same response I was back to following rabbit holes.
 I saw that Hacker0x01 retweeted an account called BountyPayHQ.
 I investigated and noticed a  tweet reading the following:
@@ -191,22 +191,22 @@ She tweeted a picture of her badge (never do this)
 https://pbs.twimg.com/media/EXfGdchWoAAtVO0?format=jpg&name=4096x4096
 Another staff_id to try.
 
-{% highlight javascript %}
+```javascript
 {"description":"Staff Member Account Created","username":"sandra.allison","password":"s%3D8qB8zEpMnc*xsz7Yp5"}
-{% endhighlight %}
+```
 
 Aaaand we have a staff account, sweet.
 Looking around we see a ticket from an admin, the ability to change our profile name and picture as well as the ability to report a url to the admins. With the exception being /admin urls which will become important in a bit.
 The html for the ticket tab referenced a javascript file called 
 
 It was relatively smalle so i quickly went through the code to determine what it does.
-{% highlight javascript %}
+```javascript
 $(".upgradeToAdmin").click(function () {
     let t = $('input[name="username"]').val();
     $.get("/admin/upgrade?username=" + t, function () {
         alert("User Upgraded to Admin")
     })
-{% endhighlight %}
+```
 Sends a request to an endpoint upgrading an account to admin. Juicy. Hitting it we get denied telling us we are missing the permissions.
 ```javascript
 $(".tab").click(function () {
