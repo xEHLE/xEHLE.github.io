@@ -255,7 +255,6 @@ After a successful dry run i base64 encoded the path, appended it to the report 
 ```
 and send it off.
 
------------------------
 
 A short wait later i refreshed the page and was greeted with a new tab in my menu called admin.
 
@@ -286,10 +285,6 @@ Now i decided to write a quick python script to automatically generate the css f
 It found that there are 7 input fields with names code_1 - code_7.
 
 This was the code i ended up with
-
------------------------
-
------------------------
 
 {% highlight python %}
 
