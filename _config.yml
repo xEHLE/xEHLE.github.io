@@ -1,0 +1,43 @@
+permalink: pretty
+title: sshell > blog
+tagline: 'security things and security stuff'
+url: https://sshell.co
+paginate: 1
+baseurl: "/"
+
+
+# Gems
+plugins:
+  - jekyll-gist
+  - jekyll-paginate
+  - jekyll-seo-tag
+
+# Optimize Jekyll
+exclude:
+  - .editorconfig
+  - .git
+  - .jekyll-cache
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE.md
+  - README.md
+
+sass:
+  sass_dir: _sass
+  style: :compressed
+
+# Options
+
+# Replace this value and uncomment to enable Google Analytics tracking
+ga_analytics: UA-172524932-1
+
+# Specify the author for blog posts
+author:
+  name: sshell
+  url: https://twitter.com/sshell_
+  #email: sshell_
+  
+paginate: 5
+
+# Custom vars
+version: 3.0.0
