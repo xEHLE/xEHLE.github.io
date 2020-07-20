@@ -18,7 +18,7 @@
 .highlight .gu { color: rgb(0, 168, 0); } /* Generic.Subheading */
 .highlight .gt { color: #9c6 } /* Generic.Traceback */
 .highlight .kc { color: rgb(2, 221, 221); }; } /* Keyword.Constant */
-.highlight .kd { color: rgb(2, 221, 221); }; } /* Keyword.Declaration */
+.highlight .kd { color: rgb(0, 147, 221); }; } /* Keyword.Declaration */
 .highlight .kn { color: rgb(2, 221, 221); } /* Keyword.Namespace */
 .highlight .kp { color: rgb(2, 221, 221); } } /* Keyword.Pseudo */
 .highlight .kr { color: rgb(2, 221, 221); }; } /* Keyword.Reserved */
@@ -59,6 +59,8 @@
 .highlight .vg { color: rgb(4, 196, 196) } /* Name.Variable.Global */
 .highlight .vi { color: rgb(4, 196, 196) } /* Name.Variable.Instance */
 .highlight .il { color: #f60 } /* Literal.Number.Integer.Long */
+
+.highlight .nx { color: rgb(252, 215, 8) }
 
 .highlight .n { color: #fff }
 .highlight .p { color: #fff }

