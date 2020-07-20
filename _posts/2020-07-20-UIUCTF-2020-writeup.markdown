@@ -74,7 +74,8 @@ So ofc the first thing the do is test for SQL injections.
 Opening the actual challenge site we are greeted with a barebones login form
 and a way to search for users.
 Let's try it out.
-`%` is a wildcard character in SQL, so searching for a user called `%` dumps us the entire user list.
+`%` is a wildcard character in SQL, so searching for a user called `%` dumps us the entire user list. 
+(thanks to [@hermit](https://github.com/deepseagirl/) for reminding me this exists i was bruteforcing the users with a name list...)
 
 | Name | Bio |
 |:----:|:---:|
