@@ -62,7 +62,8 @@
 
 .highlight .n { color: #fff }
 .highlight .p { color: #fff }
+.highlight .o { color: #c30 }
 
-.css .o,
+.css .o { color: #c30; }
 .css .o + .nt,
 .css .nt + .nt { color: #c30; }
