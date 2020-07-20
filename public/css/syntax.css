@@ -17,11 +17,11 @@
 .highlight .gs { } /* Generic.Strong */
 .highlight .gu { color: rgb(0, 168, 0); } /* Generic.Subheading */
 .highlight .gt { color: #9c6 } /* Generic.Traceback */
-.highlight .kc { color: rgb(2, 221, 221); }; } /* Keyword.Constant */
-.highlight .kd { color: rgb(0, 147, 221); }; } /* Keyword.Declaration */
+.highlight .kc { color: rgb(2, 221, 221); } /* Keyword.Constant */
+.highlight .kd { color: rgb(0, 147, 221); } /* Keyword.Declaration */
 .highlight .kn { color: rgb(2, 221, 221); } /* Keyword.Namespace */
-.highlight .kp { color: rgb(2, 221, 221); } } /* Keyword.Pseudo */
-.highlight .kr { color: rgb(2, 221, 221); }; } /* Keyword.Reserved */
+.highlight .kp { color: rgb(2, 221, 221); }  /* Keyword.Pseudo */
+.highlight .kr { color: rgb(2, 221, 221); } /* Keyword.Reserved */
 .highlight .kt { color: #078; } /* Keyword.Type */
 .highlight .m { color: #f60 } /* Literal.Number */
 .highlight .s { color: #d44950 } /* Literal.String */
