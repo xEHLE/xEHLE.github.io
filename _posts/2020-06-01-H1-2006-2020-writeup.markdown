@@ -208,7 +208,7 @@ $(".upgradeToAdmin").click(function () {
     })
 {% endhighlight %}
 Sends a request to an endpoint upgrading an account to admin. Juicy. Hitting it we get denied telling us we are missing the permissions.
-{% highlight javascript %}
+```javascript
 $(".tab").click(function () {
     return $(".tab").removeClass("active"),
     $(this).addClass("active"),
@@ -216,7 +216,7 @@ $(".tab").click(function () {
     $("div.content-" + $(this).attr("data-target")).removeClass("hidden"),
     !1
 })
-{% endhighlight %}
+```
 Some UI stuff.
 {% highlight javascript %}
 $(".sendReport").click(function () {
