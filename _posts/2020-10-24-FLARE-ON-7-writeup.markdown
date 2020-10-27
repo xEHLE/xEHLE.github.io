@@ -858,7 +858,7 @@ Func AREWUOKNZVH($flyoojibbo, $fltyapmigo)
 EndFunc   ;==>AREWUOKNZVH
 ```
 
-It uses a common technique of having an array of hardcoded strings that are base64'd or otherwise encoded to obfuscate function arguments and other function calls. This reversing took a while to give everything some meaningful names and search/replacing everything from the encoded arrays. After this we have a more readable but still pretty bad piece of code. My next step was grepping for the defined functoin names to see where they are used. To my surprise a lot of the functions were never called which cut down the work of understanding the code a lot. Eventually I narrowed it down to a few interesting functions, one which gets the computer name:
+It uses a common technique of having an array of hardcoded strings that are base64'd or otherwise encoded to obfuscate function arguments and other function calls. This reversing took a while to give everything some meaningful names and search/replacing everything from the encoded arrays. After this we have a more readable but still pretty bad piece of code. My next step was grepping for the defined function names to see where they are used. To my surprise a lot of the functions were never called which cut down the work of understanding the code a lot. Eventually I narrowed it down to a few interesting functions, one which gets the computer name:
 
 ```php
 FUNC getComputerName ( ) 
@@ -994,7 +994,7 @@ FUNC obFUNC_4 ( BYREF $obf4_a1 )
 ENDFUNC 
 ```
 
-What followed was hours of understanding how autoit operates and its syntax. We know it uses out computername for important operations later in the big function that has a bunch of calls to crypto dlls and which ultimately output our flag. And to get there I had to figure out what the function that gets called on the computername actually does. AutoIt was very uncooperative in running the code so translating to python it is again.
+What followed was hours of understanding how autoit operates and its syntax. We know it uses our computername for important operations later in the big function that has a bunch of calls to crypto dlls and which ultimately output our flag. And to get there I had to figure out what the function that gets called on the computername actually does. AutoIt was very uncooperative in running the code so translating to python it is again.
 The first thing it does is open the main picture in the app, seeks past the bmp header and reads X bytes into a buffer.
 Then it mangles those bytes with our computername, or so we thought.
 It took hours and hours to figure out what this code actually did even though it looked simple. The translated python code was correct, but instead of printing the actual output. Printing right before that actually was the important part. So lesson learned here is debug every step of your code if you dont get sane results.
