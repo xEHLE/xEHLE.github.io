@@ -821,7 +821,7 @@ public class Program
 ```
 
 {:refdef: style="text-align: center;"}
-![tkapp-flag]({{ '/public/tkapp-flag.png' | relative_url }}){: .imgCenter}
+![tkapp-flag]({{ '/public/tkapp-flag.jpg' | relative_url }}){: .imgCenter}
 {: refdef}
 
 Flag: `n3ver_go1ng_to_recov3r@flare-on.com`
