@@ -94,7 +94,7 @@ And we are done, running the game again this time from the console and not start
 ![fidler-flag]({{ '/public/fidler-flag.png' | relative_url }}){: .imgCenter}
 {: refdef}
 
-### Flag: idle_with_kitty@flare-on.com
+Flag: `idle_with_kitty@flare-on.com`
 
 ----------------
 
@@ -144,7 +144,7 @@ Looking at the seection headers we see that it should be 16000, so we set the co
 ![garbage-flag]({{ '/public/garbage-flag.png' | relative_url }}){: .imgCenter}
 {: refdef}
 
-### Flag: C0rruptGarbag3@flare-on.com
+Flag: `C0rruptGarbag3@flare-on.com`
 
 ----------------
 
@@ -228,7 +228,7 @@ In theory i just need to hold the down arrow to duck and slide to my flag now. A
 ![wednesday-flag]({{ '/public/wednesday-flag.png' | relative_url }}){: .imgCenter}
 {: refdef}
 
-### Flag: 1t_i5_wEdn3sd4y_mY_Dud3s@flare-on.com
+Flag: `1t_i5_wEdn3sd4y_mY_Dud3s@flare-on.com`
 
 ----------------
 
@@ -409,7 +409,7 @@ with open("payload.txt", "r") as f:
 ![report-flag]({{ '/public/report-flag.png' | relative_url }}){: .imgCenter}
 {: refdef}
 
-### FlAG: thi5_cou1d_h4v3_b33n_b4d@flare-on.com
+FlAG: `thi5_cou1d_h4v3_b33n_b4d@flare-on.com`
 
 ----------------
 
@@ -824,7 +824,7 @@ public class Program
 ![tkapp-flag]({{ '/public/tkapp-flag.png' | relative_url }}){: .imgCenter}
 {: refdef}
 
-### Flag: n3ver_go1ng_to_recov3r@flare-on.com
+Flag: `n3ver_go1ng_to_recov3r@flare-on.com`
 
 ----------------
 
@@ -1022,7 +1022,7 @@ Which is what we have to set our computername to, and after changing the compute
 ![codeit-flag]({{ '/public/codeit-flag.png' | relative_url }}){: .imgCenter}
 {: refdef}
 
-### Flag: L00ks_L1k3_Y0u_D1dnt_Run_Aut0_Tim3_0n_Th1s_0ne!@flare-on.com
+Flag: `L00ks_L1k3_Y0u_D1dnt_Run_Aut0_Tim3_0n_Th1s_0ne!@flare-on.com`
 
 ----------------
 
@@ -1096,7 +1096,7 @@ Running strings on the shellcode as well as looking at the code, we see it acces
 ![recrowd-flag]({{ '/public/recrowd-flag.png' | relative_url }}){: .imgCenter}
 {: refdef}
 
-### Flag: h4ve_you_tri3d_turning_1t_0ff_and_0n_ag4in@flare-on.com
+Flag: `h4ve_you_tri3d_turning_1t_0ff_and_0n_ag4in@flare-on.com`
 
 ## Aardvark {#aardvark}
 {: style="text-align: center"}
@@ -1148,7 +1148,7 @@ I changed the bytes at offset 0xb9c from 0x20202020 to 0x4f4f2020 and played the
 
 The format looks correct, but the actual flag text looks like junk. So i thought it didnt actually work, after playing around with the exe for a while trying some other patches and going for a walk i thought why not try actually handing in the flag it gave me, it worked -.-
 
-### Flag: c1ArF/P2CjiDXQIZ@flare-on.com
+Flag: `c1ArF/P2CjiDXQIZ@flare-on.com`
 
 ## Crackinstaller {#crackinstaller}
 {: style="text-align: center"}
@@ -1225,7 +1225,7 @@ So grabbing the values in the bytearray that are used in the value eventually pa
 
 We get the flag!
 
-### Flag: S0_m@ny_cl@sse$_in_th3_Reg1stry@flare-on.com
+Flag: `S0_m@ny_cl@sse$_in_th3_Reg1stry@flare-on.com`
 
 ## Break {#Break}
 {: style="text-align: center"}
@@ -1486,7 +1486,7 @@ print(hex(hexstring * pow(flag, -1, modulo ) % modulo))
 ```
 There we have the last part of our flag in reverse `moc.no-eralf@s3ippup_0n_`.
 
-### Flag: w3lc0mE_t0_Th3_l4nD_0f_De4th_4nd_d3strUct1oN_4nd_n0_puppi3s@flare-on.com
+Flag: `w3lc0mE_t0_Th3_l4nD_0f_De4th_4nd_d3strUct1oN_4nd_n0_puppi3s@flare-on.com`
 
 
 ## Rabbithole {#Rabbithole}
@@ -1588,6 +1588,6 @@ the mode was set to ECB for the serpent decryption, so i tried all the other one
 ![rabbithole-flag]({{ '/public/rabbithole-flag.png' | relative_url }}){: .imgCenter}
 {: refdef}
 
-### Flag: r4d1x_m4l0rum_357_cup1d1745@flare-on.com
+Flag: `r4d1x_m4l0rum_357_cup1d1745@flare-on.com`
 
 Thanks to all the people i could bounce ideas of and for the occasional hint. It was a grueling but fun 6 weeks and i learned a LOT of new things and tricks. Until next year :)
