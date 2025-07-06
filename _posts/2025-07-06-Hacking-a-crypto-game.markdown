@@ -8,7 +8,7 @@ Earlier this month, [Sam Curry](https://x.com/samwcyo) and I found one of our fi
 
 I got really deep into the solana ecosystem at the start of the year, and one of the things we were always interested in were games that integrate crypto in one form or another. We found an upcoming "pay-to-spawn" shooter, a battle royale game where you have to put up some amount of crypto to spawn and the winner takes all.
 Sadly for us, the game was not fully released and it's in closed beta with no way to get invites. 
-We also could not find the actual game binary to poke around on the website anywhere, but our friend [(]Justin Rhinehart](https://x.com/sshell_) found it was uploaded to VirusTotal.
+We also could not find the actual game binary to poke around on the website anywhere, but our friend [Justin Rhinehart](https://x.com/sshell_) found it was uploaded to VirusTotal.
 
 After acquiring a copy of the binary we were met with essentially a blank screen as the game servers were not currently running. So we had a closer look at the actual website powering the game. Account signups were enabled and after making an account and playing around with the website for a little bit, we made some progress. The age old match-and-replace "false" with "true" popped up another, previously hidden, menu section in the dashboard.
 
