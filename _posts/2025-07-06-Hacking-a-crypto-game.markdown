@@ -6,7 +6,7 @@ categories: crypto, hacks, writeup
 
 Earlier this month, [Sam Curry](https://x.com/samwcyo) and I found one of our first exploitable ORM injection vulnerabilities that we've seen in the wild and leveraged it to steal cryptocurrency from an online game.
 
-I got really deep into the solana ecosystem at the start of the year, and one of the things we were always interested in were games that integrate crypto in one form or another. We found an upcoming "pay-to-spawn" shooter, a battle royale game where you have to put up some amount of crypto to spawn and the winner takes all.
+All of us being gamers working in crypto, one of the things we were always interested in were games that integrate crypto in one form or another. We found an upcoming "pay-to-spawn" shooter, a battle royale game where you have to put up some amount of crypto to spawn and the winner takes all.
 Sadly for us, the game was not fully released and it's in closed beta with no way to get invites. 
 We also could not find the actual game binary to poke around on the website anywhere, but our friend [Justin Rhinehart](https://x.com/sshell_) found it was uploaded to VirusTotal.
 
@@ -25,7 +25,19 @@ Looks like the admin panel for the game is just a hidden menu on the main site. 
 Taking a step back and seeing if there were any other subdomains accessible, we noticed a "dev." domain that appeared to have the exact same content as the main site. Signups worked there as well, with one major difference: Django debug mode was enabled. This meant API calls that failed were throwing verbose errors which allowed us to quickly gather more information about the inner working of the site. 
 While Django debug mode is usually a quick win, this time all the potential secrets and passwords were redacted by Django.
 We tried gathering more information from the little source code snippets that are in the stack traces, also without any luck.
-Thats when I noticed that one of the API endpoints that we forced to throw an error told us that we were controlling the filter for an ORM query on the backend.
+```
+POST /api/race/queue HTTP/2
+Host: dev.xxx.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 120
+
+{"queue":"default","action":"remove_users","query":{"start_filters":{"id":"123"},"filters":{},"order":[]}}
+```
+Thats when I noticed that the API request above threw an error told us that we were controlling the filter for an ORM query on the backend.
 Remembering the great blogpost [plORMbing your Django ORM](https://www.elttam.com/blog/plormbing-your-django-orm/) by Alex Brown, we got to work trying to get our admin permissions. 
 
 The error leaked a long list of models that we could try to juice for more information. Throwing `password` at the request, to try and leak user's password worked!
