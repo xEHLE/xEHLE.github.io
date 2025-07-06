@@ -78,3 +78,7 @@ Now the last thing to check was if we had access to the crown jewels that is the
 {: refdef}
 
 Everything was responsibly disclosed to the companies involved and fixes were deployed for the issues that we found.
+
+Shoutouts for helping with the hacking and blogpost:
+- Samuel Curry [(@samwcyo)](https://x.com/samwcyo)
+- Justin Rhinehart [(@sshell_)](https://x.com/sshell_)
