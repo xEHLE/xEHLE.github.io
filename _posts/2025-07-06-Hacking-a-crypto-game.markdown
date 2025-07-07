@@ -2,6 +2,7 @@
 layout: post
 title: "Hacking a pay-to-play crypto shooter"
 categories: writeup
+image: /public/crypto-shooter-embed.png
 ---
 
 Earlier this month, [Sam Curry](https://x.com/samwcyo) and I found one of our first exploitable ORM injection vulnerabilities that we've seen in the wild and leveraged it to steal cryptocurrency from an online game.
@@ -13,14 +14,20 @@ We also could not find the actual game binary to poke around on the website anyw
 After acquiring a copy of the binary we were met with essentially a blank screen as the game servers were not currently running. So we had a closer look at the actual website powering the game. Account signups were enabled and after making an account and playing around with the website for a little bit, we made some progress. The age old match-and-replace "false" with "true" popped up another, previously hidden, menu section in the dashboard.
 
 {:refdef: style="text-align: center;"}
-![team-tools]({{ '/public/team-tools.png' | relative_url }}){: .imgCenter}
+![no-admin]({{ '/public/no-admin.png' | relative_url }}){: .imgCenter}
 {: refdef}
+*Accessing the website normally*
+{:refdef: style="text-align: center;"}
+![admin-mr]({{ '/public/admin-mr.png' | relative_url }}){: .imgCenter}
+{: refdef}
+*Accessing the website with the client-side match and replace for "isAdmin" set to "true"*
 
 Looks like the admin panel for the game is just a hidden menu on the main site. While the match-and-replace trick gave us visual access to the admin panel, no data was actually accessible and most relevant API calls threw a 401 unauthorized, as our user accounts obviously lacked admin permissions. While this gave us a good target to aim for, getting permissions for the admin panel, we didn't find any way to escalate our privileges on the main site.
 
 {:refdef: style="text-align: center;"}
 ![admin-panel]({{ '/public/admin-panel.png' | relative_url }}){: .imgCenter}
 {: refdef}
+*A look at the admin panel with no admin permissions*
 
 Taking a step back and seeing if there were any other subdomains accessible, we noticed a "dev." domain that appeared to have the exact same content as the main site. Signups worked there as well, with one major difference: Django debug mode was enabled. This meant API calls that failed were throwing verbose errors which allowed us to quickly gather more information about the inner working of the site. 
 While Django debug mode is usually a quick win, this time all the potential secrets and passwords were redacted by Django.
@@ -67,6 +74,7 @@ Sam cooked up a quick script to automate the bruteforcing of the emails.
 {:refdef: style="text-align: center;"}
 ![script]({{ '/public/script.png' | relative_url }}){: .imgCenter}
 {: refdef}
+*Exploit script trying to find an admin user*
 
 Now we had the emails of the admins, but no way to actually log in. Looking back at the list of models, we noticed the `mail_log` model.
 This had multiple fields, like `subject` and `message`. This sounded suspiciously close to emails that the system sends to users.
@@ -75,6 +83,7 @@ To quickly test that theory, I requested a password reset for my account and usi
 {:refdef: style="text-align: center;"}
 ![pw-reset]({{ '/public/pw-reset.png' | relative_url }}){: .imgCenter}
 {: refdef}
+*Exploit script leaking a password reset link*
 
 Jackpot! Now all we had to do was combine everything to get our admin access.
 We requested a password reset for the admin email that we leaked previously, then we leaked the password reset link from the email stored in the `mail_log` and simply used the link to reset the password of the admin so we can log in.
@@ -82,12 +91,14 @@ We requested a password reset for the admin email that we leaked previously, the
 {:refdef: style="text-align: center;"}
 ![admin-access]({{ '/public/admin-access.png' | relative_url }}){: .imgCenter}
 {: refdef}
+*Full access to the admin panel*
 
 Now the last thing to check was if we had access to the crown jewels that is the payout wallet for the game. We tried sending a small amount of USDC that was in the wallet to us, which worked. We had full access to all admin functionality, including the ability to drain the wallets that are running the game!
 
 {:refdef: style="text-align: center;"}
 ![jackpot]({{ '/public/jackpot.png' | relative_url }}){: .imgCenter}
 {: refdef}
+*Moving funds from the game's crypto wallet*
 
 Everything was responsibly disclosed to the companies involved and fixes were deployed for the issues that we found.
 
