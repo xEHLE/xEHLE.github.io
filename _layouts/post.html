@@ -2,17 +2,17 @@
 layout: default
 ---
 <!-- Open Graph -->
-<meta property="og:type" content="article" />
-<meta property="og:title" content="{{ page.title | xml_escape }}" />
-<meta property="og:description" content="{{ page.description | xml_escape }}" />
-<meta property="og:image" content="{{ site.url }}{{ page.image }}" />
+<meta property="og:title" content="{{ page.title | default: site.title | xml_escape }}" />
+<meta property="og:description" content="{{ page.description | default: site.description | xml_escape }}" />
+<meta property="og:image" content="{{ site.url }}{{ page.image | default: site.default_image }}" />
 <meta property="og:url" content="{{ site.url }}{{ page.url }}" />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="{{ page.title | xml_escape }}" />
-<meta name="twitter:description" content="{{ page.description | xml_escape }}" />
-<meta name="twitter:image" content="{{ site.url }}{{ page.image }}" />
+<meta name="twitter:title" content="{{ page.title | default: site.title | xml_escape }}" />
+<meta name="twitter:description" content="{{ page.description | default: site.description | xml_escape }}" />
+<meta name="twitter:image" content="{{ site.url }}{{ page.image | default: site.default_image }}" />
+
 
 <article class="post">
   <h1 class="post-title">{{ page.title }}</h1>
