@@ -8,7 +8,7 @@ image: /public/crypto-shooter-embed.png
 
 Earlier this month, [Sam Curry](https://x.com/samwcyo) and I found one of our first exploitable ORM injection vulnerabilities that we've seen in the wild and leveraged it to steal cryptocurrency from an online game.
 
-All of us being gamers working in crypto, one of the things we were always interested in were games that integrate crypto in one form or another. We found an upcoming "pay-to-spawn" shooter, a battle royale game where you have to put up some amount of crypto to spawn and the winner takes all.
+We found an upcoming "pay-to-spawn" shooter, a battle royale game where you have to put up some amount of crypto to spawn and the winner takes all.
 Sadly for us, the game was not fully released and it's in closed beta with no way to get invites. 
 We also could not find the actual game binary to poke around on the website anywhere, but our friend [Justin Rhinehart](https://x.com/sshell_) found it was uploaded to VirusTotal.
 
