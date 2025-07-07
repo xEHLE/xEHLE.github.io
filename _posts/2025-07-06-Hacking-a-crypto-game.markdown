@@ -15,19 +15,19 @@ After acquiring a copy of the binary we were met with essentially a blank screen
 
 <figure style="text-align: center;">
   <img src="{{ '/public/no-admin.png' | relative_url }}" alt="No admin panel" class="imgCenter">
-  <figcaption style="font-size: 0.9em; color: #666;">Accessing the website normally</figcaption>
+  <figcaption style="font-size: 0.8em; color: #666; margin-top: -25px;">Accessing the website normally</figcaption>
 </figure>
 
 <figure style="text-align: center;">
   <img src="{{ '/public/admin-mr.png' | relative_url }}" alt="admin panel option visible" class="imgCenter">
-  <figcaption style="font-size: 0.9em; color: #666;">Accessing the website with the client-side match and replace for "isAdmin" set to "true"</figcaption>
+  <figcaption style="font-size: 0.8em; color: #666; margin-top: -25px;">Accessing the website with the client-side match and replace for "isAdmin" set to "true"</figcaption>
 </figure>
 
 Looks like the admin panel for the game is just a hidden menu on the main site. While the match-and-replace trick gave us visual access to the admin panel, no data was actually accessible and most relevant API calls threw a 401 unauthorized, as our user accounts obviously lacked admin permissions. While this gave us a good target to aim for, getting permissions for the admin panel, we didn't find any way to escalate our privileges on the main site.
 
 <figure style="text-align: center;">
   <img src="{{ '/public/admin-panel.png' | relative_url }}" alt="admin panel" class="imgCenter">
-  <figcaption style="font-size: 0.9em; color: #666;">A look at the admin panel with no admin permissions</figcaption>
+  <figcaption style="font-size: 0.8em; color: #666; margin-top: -25px;">A look at the admin panel with no admin permissions</figcaption>
 </figure>
 
 Taking a step back and seeing if there were any other subdomains accessible, we noticed a "dev." domain that appeared to have the exact same content as the main site. Signups worked there as well, with one major difference: Django debug mode was enabled. This meant API calls that failed were throwing verbose errors which allowed us to quickly gather more information about the inner working of the site. 
@@ -74,7 +74,7 @@ Sam cooked up a quick script to automate the bruteforcing of the emails.
 
 <figure style="text-align: center;">
   <img src="{{ '/public/script.png' | relative_url }}" alt="scripting the exploit" class="imgCenter">
-  <figcaption style="font-size: 0.9em; color: #666;">Exploit script trying to find an admin user</figcaption>
+  <figcaption style="font-size: 0.8em; color: #666; margin-top: -25px;">Exploit script trying to find an admin user</figcaption>
 </figure>
 
 Now we had the emails of the admins, but no way to actually log in. Looking back at the list of models, we noticed the `mail_log` model.
@@ -83,7 +83,7 @@ To quickly test that theory, I requested a password reset for my account and usi
 
 <figure style="text-align: center;">
   <img src="{{ '/public/pw-reset.png' | relative_url }}" alt="scripting the exploit" class="imgCenter">
-  <figcaption style="font-size: 0.9em; color: #666;">Exploit script leaking a password reset link</figcaption>
+  <figcaption style="font-size: 0.8em; color: #666; margin-top: -25px;">Exploit script leaking a password reset link</figcaption>
 </figure>
 
 Jackpot! Now all we had to do was combine everything to get our admin access.
@@ -91,14 +91,14 @@ We requested a password reset for the admin email that we leaked previously, the
 
 <figure style="text-align: center;">
   <img src="{{ '/public/admin-access.png' | relative_url }}" alt="accessing the admin panel" class="imgCenter">
-  <figcaption style="font-size: 0.9em; color: #666;">Full access to the admin panel</figcaption>
+  <figcaption style="font-size: 0.8em; color: #666; margin-top: -25px;">Full access to the admin panel</figcaption>
 </figure>
 
 Now the last thing to check was if we had access to the crown jewels that is the payout wallet for the game. We tried sending a small amount of USDC that was in the wallet to us, which worked. We had full access to all admin functionality, including the ability to drain the wallets that are running the game!
 
 <figure style="text-align: center;">
   <img src="{{ '/public/jackpot.png' | relative_url }}" alt="moving game wallet funds" class="imgCenter">
-  <figcaption style="font-size: 0.9em; color: #666;">Moving funds from the game's crypto wallet</figcaption>
+  <figcaption style="font-size: 0.8em; color: #666; margin-top: -25px;">Moving funds from the game's crypto wallet</figcaption>
 </figure>
 
 Everything was responsibly disclosed to the companies involved and fixes were deployed for the issues that we found.

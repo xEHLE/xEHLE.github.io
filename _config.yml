@@ -4,7 +4,7 @@ tagline: 'CTF and bug bounty writeups'
 url: https://blog.p1.gs
 paginate: 1
 baseurl: "/"
-default_image: /assets/images/og/default.png
+default_image: /public/rich-embed.png
 
 # Gems
 plugins:
