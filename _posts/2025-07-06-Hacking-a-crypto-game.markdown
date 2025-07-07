@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Hacking a pay-to-play crypto shooter"
-categories: crypto, hacks, writeup
+categories: writeup
 ---
 
 Earlier this month, [Sam Curry](https://x.com/samwcyo) and I found one of our first exploitable ORM injection vulnerabilities that we've seen in the wild and leveraged it to steal cryptocurrency from an online game.
