@@ -40,7 +40,7 @@ Content-Length: 120
 Thats when I noticed that the API request above threw an error told us that we were controlling the filter for an ORM query on the backend.
 Remembering the great blogpost [plORMbing your Django ORM](https://www.elttam.com/blog/plormbing-your-django-orm/) by Alex Brown, we got to work trying to get our admin permissions. 
 
-The error leaked a long list of models that we could try to juice for more information. Throwing `password` at the request, to try and leak user's password worked!
+The error leaked a long list of models that we could try to juice for more information. Throwing `password` with the `__contains` filter at the request, to try and leak the user's password hash worked!
 ```
 POST /api/race/queue HTTP/2
 Host: dev.xxx.com
