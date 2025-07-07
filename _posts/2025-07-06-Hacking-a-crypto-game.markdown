@@ -1,6 +1,7 @@
 ---
 layout: post
-title: "Hacking a pay-to-play crypto shooter"
+title: "Exploiting an ORM Injection to Steal Cryptocurrency from an Online Shooter"
+description: ""
 categories: writeup
 image: /public/crypto-shooter-embed.png
 ---
